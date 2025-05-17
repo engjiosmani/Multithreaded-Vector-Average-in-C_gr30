@@ -32,3 +32,22 @@ void* calculate_partial_sum(void* arg) {
 
     pthread_exit(NULL);
 }
+
+int main() {
+    pthread_t threads[NUM_THREADS];
+    ThreadData thread_data[NUM_THREADS];
+    elements_per_thread = VECTOR_SIZE / NUM_THREADS;
+
+    for (int i = 0; i < VECTOR_SIZE; i++) {
+        vector[i] = i + 1;
+    }
+
+    for (int i = 0; i < NUM_THREADS; i++) {
+        thread_data[i].thread_id = i;
+        thread_data[i].start_index = i * elements_per_thread;
+        thread_data[i].end_index = (i == NUM_THREADS - 1) ?
+            VECTOR_SIZE : (i + 1) * elements_per_thread;
+
+        pthread_create(&threads[i], NULL, calculate_partial_sum, (void*)&thread_data[i]);
+    }
+}
