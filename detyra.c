@@ -49,5 +49,18 @@ int main() {
             VECTOR_SIZE : (i + 1) * elements_per_thread;
 
         pthread_create(&threads[i], NULL, calculate_partial_sum, (void*)&thread_data[i]);
+    }   
+    for (int i = 0; i &lt; NUM_THREADS; i++) {
+     pthread_join(threads[i], NULL);
     }
+    
+    double total_sum = 0;
+    for (int i = 0; i &lt; NUM_THREADS; i++) {
+        total_sum += partial_sums[i];
+    }
+
+    double average = total_sum / VECTOR_SIZE;
+    printf(&quot;Mesatarja e vektorit është: %.2f\n&quot;, average);
+    
+    return 0;
 }
